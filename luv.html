@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ถึงมิน... จากคิว 💌</title>
+<style>
+:root {
+  --rose: #ff4f91;
+  --pink: #ffb5d0;
+  --lilac: #b7a4ff;
+  --ink: #593e61;
+  --muted: #927797;
+  --paper: #fffafd;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(140deg, #ffd8e8, #f1e5ff 55%, #d9f5ff);
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+body:before, body:after {
+  content: "";
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  filter: blur(55px);
+  opacity: .5;
+  pointer-events: none;
+  z-index: 0;
+}
+body:before { background: #ff9cc5; left: -100px; top: -90px; }
+body:after { background: #ac9aff; right: -100px; bottom: -100px; }
+
+#sparkles-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 590px);
+  min-height: 450px;
+  padding: clamp(22px, 5vw, 40px);
+  border: 1px solid #ffffffd9;
+  border-radius: 30px;
+  background: #ffffffc9;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 80px #77518b25;
+  text-align: center;
+  animation: rise .6s ease both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px) scale(.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.pill {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  border: 1px solid #f9c6dd;
+  background: #fff2f8;
+  border-radius: 999px;
+  padding: 7px 13px;
+  color: #ce5289;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+h1 { font-size: clamp(25px, 5.5vw, 36px); line-height: 1.3; margin: 12px 0; color: #68436d; }
+p { color: var(--muted); font-size: 16px; line-height: 1.8; margin: 8px 0 20px; }
+
+.big {
+  font-size: 66px;
+  line-height: 1.4;
+  margin: 8px 0;
+  filter: drop-shadow(0 8px 10px #ff79aa30);
+  animation: heartbeat 1.5s infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10% { transform: scale(1.1); }
+  20% { transform: scale(1); }
+  30% { transform: scale(1.06); }
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 20px;
+  font: 700 15px "Segoe UI", Tahoma, sans-serif;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+button:active { transform: scale(.96); }
+
+.primary { background: linear-gradient(135deg, #ff4f91, #ff8fbd); color: white; box-shadow: 0 8px 22px #ff4f9140; }
+.primary:hover { transform: translateY(-2px); box-shadow: 0 12px 26px #ff4f9140; }
+.soft { background: #fff; color: #885f8d; box-shadow: 0 6px 18px #77518b12; }
+.outline { background: transparent; border: 1px solid #edc5dc; color: #a36b96; }
+.actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.tiny { font-size: 12px; color: #b18cb0; margin-top: 17px; line-height: 1.7; }
+
+.progress { display: flex; gap: 6px; justify-content: center; margin: 18px 0 22px; }
+.progress i { height: 5px; width: 32px; border-radius: 99px; background: #f1d9e8; transition: background .3s; }
+.progress i.active { background: linear-gradient(90deg, #ff5a9c, #b6a1ff); }
+
+.field { text-align: left; margin: 17px 0; }
+label.label { display: block; font-size: 14px; font-weight: 750; color: #805986; margin: 0 0 8px; }
+input[type=text], textarea {
+  width: 100%;
+  border: 1px solid #efd2e3;
+  border-radius: 15px;
+  padding: 13px 14px;
+  background: #fffdfd;
+  color: #65476a;
+  font: 15px "Segoe UI", Tahoma, sans-serif;
+  outline: none;
+}
+textarea { min-height: 110px; resize: vertical; line-height: 1.7; }
+input:focus, textarea:focus { border-color: #f180b3; box-shadow: 0 0 0 4px #ffdeed; }
+
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
+.choice {
+  display: flex; gap: 9px; align-items: flex-start;
+  border: 1px solid #efd2e3; border-radius: 15px; background: #fff;
+  padding: 13px; color: #805986; line-height: 1.5; font-size: 14px; cursor: pointer;
+  transition: all .2s ease;
+}
+.choice input { margin-top: 4px; accent-color: #ff4f91; }
+.choice:has(input:checked) { background: #fff0f7; border-color: #ff79ad; box-shadow: 0 0 0 2px #ffdfed; transform: translateY(-2px); }
+
+.moods { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.mood { font-size: 25px; padding: 8px 12px; background: #fff; border: 1px solid #efd2e3; border-radius: 15px; cursor: pointer; }
+.mood.on { background: #ffe7f1; border-color: #ff72aa; box-shadow: 0 0 0 3px #ffdfed; }
+
+.letter {
+  text-align: left; white-space: pre-wrap; overflow-wrap: anywhere;
+  border: 1px dashed #eab6d1; border-radius: 17px; background: #fffafd;
+  padding: 17px; line-height: 1.8; color: #805986;
+}
+
+/* Fingerprint Scanner Feature */
+.scanner-box {
+  background: #fff0f7;
+  border: 2px dashed #ff91be;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.fingerprint-btn {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff71a8, #ff9cc5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 45px;
+  color: white;
+  box-shadow: 0 10px 25px #ff4f9140;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s;
+}
+.fingerprint-btn:active { transform: scale(0.92); }
+.fingerprint-btn.scanning::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 4px;
+  background: #fff;
+  box-shadow: 0 0 15px #fff;
+  animation: scan 1.2s infinite alternate ease-in-out;
+}
+@keyframes scan { 0% { top: 0%; } 100% { top: 95%; } }
+
+.musicbar {
+  position: fixed; z-index: 4; bottom: 12px; left: 50%; transform: translateX(-50%);
+  width: min(94vw, 390px); display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border: 1px solid #ffffffc9; border-radius: 18px;
+  background: #ffffffd9; backdrop-filter: blur(12px); box-shadow: 0 8px 28px #77518b20;
+}
+.music-icon { font-size: 24px; animation: spin 5s linear infinite; animation-play-state: paused; }
+.music-icon.playing { animation-play-state: running; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.music-info { flex: 1; min-width: 0; text-align: left; }
+.music-info b { display: block; font-size: 12px; color: #76517b; }
+.music-info span { font-size: 11px; color: #a487a7; }
+.musicbar button { padding: 8px 12px; font-size: 12px; white-space: nowrap; }
+
+.fall {
+  position: fixed; top: -40px; z-index: 999;
+  pointer-events: none;
+  user-select: none;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to { transform: translate(var(--dx), 105vh) rotate(360deg); opacity: 0; }
+}
+
+.seal {
+  display: inline-grid; place-items: center; width: 86px; height: 86px;
+  border-radius: 50%; background: linear-gradient(145deg, #ff80b5, #ffb5d0);
+  color: white; font-size: 36px; box-shadow: 0 10px 25px #ff579a30;
+}
+@media(max-width:460px){
+  body { padding: 13px 12px 88px; }
+  .card { padding: 23px 17px; min-height: 420px; }
+  .choices { grid-template-columns: 1fr; }
+  .musicbar { bottom: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div id="sparkles-container"></div>
+
+<main class="card" id="app">
+ <div class="pill">✦ A SPECIAL MESSAGE FOR MIN ✦</div>
+ <div class="big">💌</div>
+ <h1>มีข้อความพิเศษส่งถึงมิน</h1>
+ <p>คิวมีเรื่องที่อยากถามและอยากบอกมินมานานแล้ว<br>ลองใช้เวลาอ่านไปด้วยกันนะ 🥹💗</p>
+ <div class="actions"><button class="primary" id="open">เปิดอ่านจดหมาย 💌</button></div>
+ <div class="tiny">อ่านจนจบก่อนนะ… คิวตั้งใจทำเว็บนี้ขึ้นมาให้มินโดยเฉพาะเลย 🌷</div>
+</main>
+
+<div class="musicbar">
+ <div class="music-icon" id="disc">💿</div>
+ <div class="music-info">
+   <b>อยากอินเพลงรัก — Season Five ft. No One Else</b>
+   <span id="musicStatus">กำลังเล่นเพลงพื้นหลังอัตโนมัติ</span>
+ </div>
+ <button class="soft" id="musicToggle">❚❚ หยุดเพลง</button>
+</div>
+
+<!-- ฝังเพลง YouTube พื้นหลัง (อยากอินเพลงรัก: SYHR25vQicU) -->
+<iframe id="yt" title="อยากอินเพลงรัก - Season Five ft. No One Else" width="1" height="1"
+ src="https://www.youtube-nocookie.com/embed/SYHR25vQicU?enablejsapi=1&autoplay=1&loop=1&playlist=SYHR25vQicU&playsinline=1"
+ allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"
+ style="position:fixed;width:1px;height:1px;opacity:.01;left:-10px;bottom:0;border:0" aria-hidden="true"></iframe>
+
+<script>
+const YOUR_NAME = "คิว";
+const HER_NAME = "มิน";
+
+const app = document.getElementById('app');
+const yt = document.getElementById('yt');
+const toggleBtn = document.getElementById('musicToggle');
+const statusText = document.getElementById('musicStatus');
+const discIcon = document.getElementById('disc');
+
+let answers = { name: HER_NAME, feeling: "", mood: "", thoughts: "", relation: "", extra: "", confirmedByFingerprint: false };
+let isPlaying = true;
+
+discIcon.classList.add('playing');
+
+function updateMusicState(play) {
+  isPlaying = play;
+  let u = new URL(yt.src);
+  u.searchParams.set('autoplay', play ? '1' : '0');
+  yt.src = u.toString();
+  toggleBtn.textContent = play ? '❚❚ หยุดเพลง' : '▶ เล่นเพลง';
+  statusText.textContent = play ? 'กำลังเล่นเพลงพื้นหลังอัตโนมัติ 🎶' : 'เพลงพื้นหลัง (หยุดชั่วคราว)';
+  discIcon.classList.toggle('playing', play);
+}
+
+toggleBtn.onclick = () => {
+  updateMusicState(!isPlaying);
+};
+
+// ป้องกันกรณี Browser บล็อก autoplay ให้ปลดล็อกเสียงเมื่อมีการคลิกครั้งแรก
+document.body.addEventListener('click', function initAudioOnce() {
+  if (!isPlaying) {
+    updateMusicState(true);
+  }
+  document.body.removeEventListener('click', initAudioOnce);
+}, { once: true });
+
+function hearts(n = 20, arr = ['💗', '💕', '✨', '🌸', '💖']) {
+  const container = document.getElementById('sparkles-container');
+  for (let i = 0; i < n; i++) {
+    setTimeout(() => {
+      const el = document.createElement('span');
+      el.className = 'fall';
+      el.textContent = arr[Math.floor(Math.random() * arr.length)];
+      el.style.left = Math.random() * 95 + 'vw';
+      el.style.fontSize = (16 + Math.random() * 22) + 'px';
+      el.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+      el.style.animationDuration = (3 + Math.random() * 2.5) + 's';
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 5500);
+    }, i * 40);
+  }
+}
+
+function esc(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function frame(step, body) {
+  app.innerHTML = `
+    <div class="pill">✦ FOR MIN FROM Q ✦</div>
+    <div class="progress">${[1,2,3,4].map(n => `<i class="${n <= step ? 'active' : ''}"></i>`).join('')}</div>
+    ${body}
+  `;
+}
+
+function go1() {
+  frame(1, `
+    <div class="big">🫶🏻</div>
+    <h1>ก่อนจะถามคำถามสำคัญ…</h1>
+    <p>คิวขอถามความรู้สึกจริงๆ ของมินได้ไหม<br>ตอบตามหัวใจมินได้เลย คิวรับฟังได้ทุกอย่างครับ 💗</p>
+    <div class="field">
+      <label class="label">อยากให้คิวเรียกเธอว่าอะไรเป็นพิเศษไหม?</label>
+      <input type="text" id="nm" maxlength="50" placeholder="ชื่อเล่น หรือคำเรียกน่ารักๆ" value="${esc(answers.name)}">
+    </div>
+    <div class="field">
+      <label class="label">ตอนนี้มินรู้สึกกับคิวแบบไหนเหรอ?</label>
+      <div class="choices">
+        ${[
+          ['crush', 'แอบมีใจให้นิดๆ 🫣'],
+          ['like', 'ชอบคิวนะ 💗'],
+          ['close', 'รู้สึกดี อยากรู้จักกันมากขึ้น ✨'],
+          ['unsure', 'ยังไม่แน่ใจ ขอเวลาแป๊บ 🌷'],
+          ['brother', 'พี่น้องที่น่ารัก 😊'],
+          ['other', 'มีความรู้สึกอื่นๆ 💌']
+        ].map(([v, t]) => `
+          <label class="choice">
+            <input type="radio" name="feel" value="${v}" ${answers.feeling === v ? 'checked' : ''}>${t}
+          </label>
+        `).join('')}
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="next">ต่อไป 💞</button>
+      <button class="soft" id="shy">เขินอยู่นะ 🙈</button>
+    </div>
+  `);
+
+  document.getElementById('next').onclick = () => {
+    answers.name = document.getElementById('nm').value.trim() || HER_NAME;
+    answers.feeling = document.querySelector('input[name=feel]:checked')?.value || '';
+    go2();
+  };
+
+  document.getElementById('shy').onclick = () => {
+    let b = document.getElementById('shy');
+    b.textContent = 'ไม่ต้องเขิน คิวอยู่ตรงนี้เสมอ 😂💗';
+    b.style.transform = `translate(${Math.random() * 30 - 15}px, ${Math.random() * 10 - 5}px)`;
+    hearts(12, ['🙈', '💗', '✨']);
+  };
+}
+
+function go2() {
+  frame(2, `
+    <div class="big">💭</div>
+    <h1>เวลาอยู่หรือคุยกับคิว มินรู้สึกยังไง?</h1>
+    <p>กดเลือกอารมณ์ที่ตรงใจ หรือพิมพ์บอกเพิ่มเติมได้เลย</p>
+    <div class="moods">
+      ${[['🥰','อบอุ่น'],['😳','เขินจัง'],['😊','สบายใจ'],['💗','หัวใจเต้นแรง'],['🤔','สับสนหน่อยๆ'],['😶','ปกติ']].map(([e,t]) => `
+        <button class="mood ${answers.mood === e ? 'on' : ''}" data-mood="${e}" title="${t}">${e}</button>
+      `).join('')}
+    </div>
+    <div class="field">
+      <label class="label">อยากบอกความรู้สึกเพิ่มเติมให้คิวฟังไหม? 💌</label>
+      <textarea id="thoughts" placeholder="เช่น คิวเป็นคน... เวลาได้คุยกันรู้สึก...">${esc(answers.thoughts)}</textarea>
+    </div>
+    <div class="actions">
+      <button class="soft" id="back">ย้อนกลับ</button>
+      <button class="primary" id="next">ไปต่อ 🌷</button>
+    </div>
+  `);
+
+  document.querySelectorAll('[data-mood]').forEach(b => b.onclick = () => {
+    answers.mood = b.dataset.mood;
+    document.querySelectorAll('[data-mood]').forEach(x => x.classList.toggle('on', x === b));
+  });
+
+  document.getElementById('back').onclick = go1;
+  document.getElementById('next').onclick = () => {
+    answers.thoughts = document.getElementById('thoughts').value.trim();
+    go3();
+  };
+}
+
+function go3() {
+  frame(3, `
+    <div class="big">💍</div>
+    <h1>มินอยากให้เราเป็นแบบไหน?</h1>
+    <p>เลือกความสัมพันธ์ที่มินต้องการได้เลยนะครับ</p>
+    <div class="choices">
+      ${[
+        ['dating', '1. ตกลงเป็นแฟนกับคิว 💖'],
+        ['slow', '2. คุยศึกษาใจกันไปก่อน 🌱'],
+        ['irl', '3. ให้คิวมาบอกต่อหน้าก่อน แล้วจะเป็นแฟน 💍'],
+        ['brother', '4. เป็นพี่น้องกันดีกว่า 😊']
+      ].map(([v, t]) => `
+        <label class="choice">
+          <input type="radio" name="rel" value="${v}" ${answers.relation === v ? 'checked' : ''}>${t}
+        </label>
+      `).join('')}
+    </div>
+
+    <!-- ฟีเจอร์สแกนลายนิ้วมือ -->
+    <div id="scannerSection" style="display:none;">
+      <div class="scanner-box">
+        <b style="color:#d83b7d;">👆 แสกนลายนิ้วมือเพื่อยืนยันการเป็นแฟนกับคิว 💖</b>
+        <div class="fingerprint-btn" id="fpBtn">☝️</div>
+        <span id="fpStatus" style="font-size:13px; color:#885f8d;">แตะนิ้วมือค้างไว้สแกนเลย!</span>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:15px;">
+      <label class="label">มีอะไรอยากบอกคิวเพิ่มเติมอีกไหม? (ไม่บังคับนะ)</label>
+      <textarea id="extra" style="min-height:80px" placeholder="ความในใจที่อยากบอกคิว...">${esc(answers.extra)}</textarea>
+    </div>
+    <div class="actions">
+      <button class="soft" id="back">ย้อนกลับ</button>
+      <button class="primary" id="review">ดูคำตอบจดหมาย 💌</button>
+    </div>
+  `);
+
+  const scannerSec = document.getElementById('scannerSection');
+  const fpBtn = document.getElementById('fpBtn');
+  const fpStatus = document.getElementById('fpStatus');
+
+  const checkRel = () => {
+    const selected = document.querySelector('input[name=rel]:checked')?.value;
+    answers.relation = selected || '';
+    if (selected === 'dating') {
+      scannerSec.style.display = 'block';
+    } else {
+      scannerSec.style.display = 'none';
+    }
+  };
+
+  document.querySelectorAll('input[name=rel]').forEach(r => r.onchange = checkRel);
+  checkRel();
+
+  fpBtn.onclick = () => {
+    fpBtn.classList.add('scanning');
+    fpStatus.textContent = 'กำลังสแกนลายนิ้วมือหัวใจ...';
+    setTimeout(() => {
+      fpBtn.classList.remove('scanning');
+      fpBtn.style.background = 'linear-gradient(135deg, #42e695, #3bb2b8)';
+      fpBtn.textContent = '✓';
+      fpStatus.textContent = '🎉 สแกนสำเร็จ! คิวและมินเป็นแฟนกันเป็นทางการแล้ว 💕';
+      answers.confirmedByFingerprint = true;
+      hearts(30, ['💖', '💍', '✨', '🌸']);
+    }, 1500);
+  };
+
+  document.getElementById('back').onclick = go2;
+  document.getElementById('review').onclick = () => {
+    answers.relation = document.querySelector('input[name=rel]:checked')?.value || '';
+    answers.extra = document.getElementById('extra').value.trim();
+    review();
+  };
+}
+
+function review() {
+  let f = {
+    crush: 'แอบมีใจให้นิดๆ 🫣',
+    like: 'ชอบคิวนะ 💗',
+    close: 'รู้สึกดี อยากรู้จักกันมากขึ้น ✨',
+    unsure: 'ยังไม่แน่ใจ ขอเวลาแป๊บ 🌷',
+    brother: 'พี่น้องที่น่ารัก 😊',
+    other: 'มีความรู้สึกอื่นๆ 💌'
+  };
+  let r = {
+    dating: '1. ตกลงเป็นแฟนกับคิว 💖',
+    slow: '2. คุยศึกษาใจกันไปก่อน 🌱',
+    irl: '3. ให้คิวมาบอกต่อหน้าก่อน แล้วจะเป็นแฟน 💍',
+    brother: '4. เป็นพี่น้องกันดีกว่า 😊'
+  };
+
+  frame(4, `
+    <div class="seal">💌</div>
+    <h1>จดหมายคำตอบจากมิน</h1>
+    <p>ตรวจดูคำตอบแล้วส่งกลับมาให้คิวอ่านได้เลยนะ 💕</p>
+    <div class="letter">
+<b>ถึง: คิว</b>
+
+<b>ความรู้สึกของ ${esc(answers.name)} ที่มีต่อคิว:</b>
+${f[answers.feeling] || 'ยังไม่ได้เลือก'}
+
+<b>ความรู้สึกเวลาอยู่ด้วยกัน:</b>
+${esc(answers.mood || 'ยังไม่ได้เลือก')}
+
+<b>สิ่งที่อยากบอกคิว:</b>
+${esc(answers.thoughts || 'ไม่มีข้อความเพิ่มเติม')}
+
+<b>สรุปความสัมพันธ์ที่เลือก:</b>
+${r[answers.relation] || 'ยังไม่ได้เลือก'}
+${answers.confirmedByFingerprint ? '\n👉 **[ผ่านการสแกนลายนิ้วมือยืนยันเป็นแฟนแล้ว! 💍💖]**' : ''}
+
+<b>ข้อความฝากถึงคิวเพิ่มเติม:</b>
+${esc(answers.extra || 'ไม่มี')}
+    </div>
+    <div class="actions">
+      <button class="soft" id="back">แก้ไขคำตอบ</button>
+      <button class="primary" id="send">สร้างข้อความส่งให้คิว 💗</button>
+    </div>
+  `);
+
+  document.getElementById('back').onclick = go3;
+  document.getElementById('send').onclick = share;
+  hearts(25);
+}
+
+function share() {
+  let f = {
+    crush: 'แอบมีใจให้นิดๆ 🫣',
+    like: 'ชอบคิวนะ 💗',
+    close: 'รู้สึกดี อยากรู้จักกันมากขึ้น ✨',
+    unsure: 'ยังไม่แน่ใจ ขอเวลาแป๊บ 🌷',
+    brother: 'พี่น้องที่น่ารัก 😊',
+    other: 'มีความรู้สึกอื่นๆ 💌'
+  };
+  let r = {
+    dating: '1. ตกลงเป็นแฟนกับคิว 💖',
+    slow: '2. คุยศึกษาใจกันไปก่อน 🌱',
+    irl: '3. ให้คิวมาบอกต่อหน้าก่อน แล้วจะเป็นแฟน 💍',
+    brother: '4. เป็นพี่น้องกันดีกว่า 😊'
+  };
+
+  let msg = `💌 คำตอบจดหมายจาก ${answers.name} ส่งถึง ${YOUR_NAME}\n\n` +
+    `• ความรู้สึกที่มีต่อคิว: ${f[answers.feeling] || 'ไม่ได้เลือก'}\n` +
+    `• อารมณ์เวลาอยู่ด้วยกัน: ${answers.mood || 'ไม่ได้เลือก'}\n\n` +
+    `• สิ่งที่อยากบอกคิว:\n"${answers.thoughts || 'ไม่มีข้อความพิเศษ'}"\n\n` +
+    `• เรื่องความสัมพันธ์: ${r[answers.relation] || 'ไม่ได้เลือก'}\n` +
+    `${answers.confirmedByFingerprint ? '✨ (แสกนลายนิ้วมือยืนยันแฟนเรียบร้อยแล้ว 💍)\n' : ''}\n` +
+    `• ความในใจเพิ่มเติม:\n"${answers.extra || 'ไม่มี'}"`;
+
+  frame(4, `
+    <div class="big">💖</div>
+    <h1>ส่งข้อความนี้ให้คิวได้เลย!</h1>
+    <p>กดคัดลอกข้อความด้านล่าง แล้วส่งในแชตให้คิวอ่านนะ 💌</p>
+    <textarea id="output" readonly style="min-height:200px"></textarea>
+    <div class="actions">
+      <button class="primary" id="copy">คัดลอกข้อความ 📋</button>
+      <button class="soft" id="share">แชร์ไปยังแชต…</button>
+    </div>
+    <div id="status" class="tiny"></div>
+    <div class="actions" style="margin-top:15px;">
+      <button class="outline" id="again">เริ่มใหม่ ↻</button>
+    </div>
+  `);
+
+  document.getElementById('output').value = msg;
+
+  document.getElementById('copy').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(msg);
+      document.getElementById('status').textContent = 'คัดลอกแล้ว! นำไปวางในแชตส่งให้คิวได้เลยนะ 💗';
+    } catch (e) {
+      let t = document.getElementById('output');
+      t.select();
+      document.execCommand('copy');
+      document.getElementById('status').textContent = 'เลือกข้อความเรียบร้อยแล้ว กดคัดลอกได้เลยจ้า 💗';
+    }
+  };
+
+  document.getElementById('share').onclick = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'คำตอบจากใจมินถึงคิว 💌', text: msg });
+      } catch (e) {}
+    } else {
+      document.getElementById('status').textContent = 'กดคัดลอกข้อความ แล้วส่งในแชตให้คิวได้เลยนะ';
+    }
+  };
+
+  document.getElementById('again').onclick = () => {
+    answers = { name: HER_NAME, feeling: '', mood: '', thoughts: '', relation: '', extra: '', confirmedByFingerprint: false };
+    home();
+  };
+
+  hearts(40, ['💗', '💖', '💕', '🌸', '✨', '💍']);
+}
+
+function home() {
+  app.innerHTML = `
+    <div class="pill">✦ A SPECIAL MESSAGE FOR MIN ✦</div>
+    <div class="big">💌</div>
+    <h1>มีข้อความพิเศษส่งถึงมิน</h1>
+    <p>คิวมีเรื่องที่อยากถามและอยากบอกมินมานานแล้ว<br>ลองใช้เวลาอ่านไปด้วยกันนะ 🥹💗</p>
+    <div class="actions"><button class="primary" id="open">เปิดอ่านจดหมาย 💌</button></div>
+    <div class="tiny">อ่านจนจบก่อนนะ… คิวตั้งใจทำเว็บนี้ขึ้นมาให้มินโดยเฉพาะเลย 🌷</div>
+  `;
+  document.getElementById('open').onclick = () => {
+    hearts(22);
+    go1();
+  };
+}
+
+document.getElementById('open').onclick = () => {
+  hearts(22);
+  go1();
+};
+</script>
+</body>
+</html>
